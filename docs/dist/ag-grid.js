@@ -2069,10 +2069,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // place each row into a wrapper
 	            var nodes = [];
 	            if (rows) {
-	                for (var i = 0; i < rows.length; i++) {
-	                    var node = {};
-	                    node.data = rows[i];
-	                    nodes.push(node);
+	                // Downstream code expects an array.
+	                // If we are given something that looks like an
+	                // Immutable.js iterable, then we havea  different method of
+	                // extracting rows.
+	                //
+	                // (under es5.1+ the first branch will run even on arrays, but
+	                // this isn't a problem)
+	                if (rows.forEach) {
+	                    rows.forEach(function (row) {
+	                        var node = {};
+	                        node.data = row;
+	                        nodes.push(node);
+	                    });
+	                }
+	                else {
+	                    // <= es5 will do this on real arrays
+	                    for (var i = 0; i < rows.length; i++) {
+	                        var node = {};
+	                        node.data = rows[i];
+	                        nodes.push(node);
+	                    }
 	                }
 	            }
 	        }
