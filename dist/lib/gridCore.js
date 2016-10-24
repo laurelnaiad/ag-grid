@@ -142,21 +142,24 @@ var GridCore = (function () {
     GridCore.prototype.periodicallyDoLayout = function () {
         var _this = this;
         if (!this.finished) {
+            // some frameworks -- ahem -- angular -- are not happy to know about time-based
+            // background events because they signal that the page is not "settled".
+            // an intervalRunner can be supplied to allow the developer to supply al runner
+            // which has the capability to run a timeout or interval in a safe context/zone.
+            var intervalRunner = this.gridOptionsWrapper.getIntervalRunner();
             var intervalMillis = this.gridOptionsWrapper.getLayoutInterval();
             // if interval is negative, this stops the layout from happening
             if (intervalMillis > 0) {
-                setTimeout(function () {
+                intervalRunner(setTimeout, intervalMillis, function () {
                     _this.doLayout();
                     _this.gridPanel.periodicallyCheck();
                     _this.periodicallyDoLayout();
-                }, intervalMillis);
+                });
             }
             else {
                 // if user provided negative number, we still do the check every 5 seconds,
                 // in case the user turns the number positive again
-                setTimeout(function () {
-                    _this.periodicallyDoLayout();
-                }, 5000);
+                intervalRunner(setTimeout, 5000, function () { return _this.periodicallyDoLayout(); });
             }
         }
     };

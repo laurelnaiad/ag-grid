@@ -80,6 +80,7 @@ export interface GridOptions {
     };
     suppressColumnVirtualisation?: boolean;
     layoutInterval?: number;
+    intervalRunner?: Function;
     functionsReadOnly?: boolean;
     functionsPassive?: boolean;
     maxConcurrentDatasourceRequests?: number;

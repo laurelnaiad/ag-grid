@@ -156,6 +156,8 @@ export declare class GridOptionsWrapper {
     isExternalFilterPresent(): boolean;
     doesExternalFilterPass(node: RowNode): boolean;
     getLayoutInterval(): number;
+    private defaultIntervalRunner(intervalOrTimeout, period, action);
+    getIntervalRunner(): Function;
     getMinColWidth(): number;
     getMaxColWidth(): number;
     getColWidth(): number;

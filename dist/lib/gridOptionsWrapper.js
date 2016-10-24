@@ -238,6 +238,17 @@ var GridOptionsWrapper = (function () {
             return constants_1.Constants.LAYOUT_INTERVAL;
         }
     };
+    GridOptionsWrapper.prototype.defaultIntervalRunner = function (intervalOrTimeout, period, action) {
+        return intervalOrTimeout.apply(window, [action, period]);
+    };
+    GridOptionsWrapper.prototype.getIntervalRunner = function () {
+        if (typeof this.gridOptions.intervalRunner === 'function') {
+            return this.gridOptions.intervalRunner;
+        }
+        else {
+            return this.defaultIntervalRunner;
+        }
+    };
     GridOptionsWrapper.prototype.getMinColWidth = function () {
         if (this.gridOptions.minColWidth > GridOptionsWrapper.MIN_COL_WIDTH) {
             return this.gridOptions.minColWidth;
